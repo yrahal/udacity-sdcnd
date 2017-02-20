@@ -15,11 +15,29 @@ from io import BytesIO
 from keras.models import model_from_json
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array
 
+import cv2
 
 sio = socketio.Server()
 app = Flask(__name__)
 model = None
 prev_image_array = None
+
+# Convert to grayscale, normalize, and flatten to 1D
+alpha = -0.5
+beta = 0.5
+x_size = 32
+y_size = 16
+
+def preprocess_image(image):
+    copy_image = np.uint8(image)
+    norm_image = cv2.normalize(copy_image, copy_image, alpha=alpha, beta=beta, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+    
+    out_image = cv2.resize(norm_image, (x_size, y_size), interpolation=cv2.INTER_AREA)
+    
+    #if(flatten_input):
+    #    out_image = np.array(out_image, dtype=np.float32).flatten()
+    
+    return out_image
 
 @sio.on('telemetry')
 def telemetry(sid, data):
@@ -32,7 +50,8 @@ def telemetry(sid, data):
     # The current image from the center camera of the car
     imgString = data["image"]
     image = Image.open(BytesIO(base64.b64decode(imgString)))
-    image_array = np.asarray(image)
+    #image_array = np.asarray(image)
+    image_array = preprocess_image(image)
     transformed_image_array = image_array[None, :, :, :]
     # This model currently assumes that the features of the model are just the images. Feel free to change this.
     steering_angle = float(model.predict(transformed_image_array, batch_size=1))
