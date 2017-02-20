@@ -44,11 +44,11 @@ The code for this section is in cells 7 to 9 of the notebook.
 
 I settled on a choice of:
 ```
-color_space='YCrCb'
+color_space='YUV'
 orientations=9
 pix_per_cell=8
 cell_per_block=2
-hog_channel=0
+hog_channel="ALL"
 ```
 
 This seems to give a good balance of having a visual identification of the vehicle and performance.
@@ -56,17 +56,17 @@ This seems to give a good balance of having a visual identification of the vehic
 ## Classifier
 
 I trained a linear SVM in the 12th code cell of the notebook. I also used spatial and color features
-to add extra accuracy to the model, where each feature vector contains 2580 elements.
+to add extra accuracy to the model, where each feature vector contains 6108 elements.
 I randomly split the data between training (85%) and test (15%).
 
-The classfier trains in 6 seconds and has 97.4% accuracy.
+The classfier trains in 31 seconds and has 98.8% accuracy.
 
 ## Sliding Window Search
 
-The sliding window code is defined in cell #7 and used in cell #11. I used 2 sizes (96 and 128) for
+The sliding window code is defined in cell #7 and used in cell #11. I used 2 sizes (64 and 96) for
 searching for cars, where the smallest are closest to the horizon, and the biggest close to the camera.
-I chose an overlap of 60% for the medium and big sizes to increase chances of detection. The total number
-of windows for images of 1280x720 is 208 windows, which increases the chances of detections while maintaining
+I chose an overlap of 50% and 60% for the medium and big sizes to increase chances of detection. The total number
+of windows for images of 1280x720 is 433 windows, which increases the chances of detections while maintaining
 a good performance. I don't search for cars above the horizon or close to the hood of the car, which also
 reduces false positives and improves performance.
 
@@ -92,9 +92,18 @@ You can find the video at `output_images/project_video_out.mp4`
 
 In the pipeline (cell #11 of the notebook), I used a heatmap to record detections in the current frame
 and combine it with the heatmaps from the previous 10 frames to create a thresholded heatmap from which
-I select only the cells that have more than 4 detections. This reduces the false positives and insures
+I select only the cells that have more than 3 detections. This reduces the false positives and insures
 a good detection for the car. I also use the `scipy.ndimage.measurements.label` to group bounding boxes
 from the same car.
+
+I also added a size filter to exclude tiny detection windows that have a size smaller than 32x32.
+
+I explored hard negative mining. In the last cell of the notebook, there's a snippet that uses the 6 test images
+and defines bounding boxes around cars, if there are any in the frame. It then creates bounding boxes over the whole
+frame and sorts them into cars/not_cars if there's a significant overlap with the manually identified bounding box.
+I fed this data back to the classifier but I had unexpected results. Although, intuitively it should have improved the
+detection, it made it less accurate on the video frames. So I ended up not using this method for the final video, but
+ it's worth exploring in the context of a neural network classifier.
 
 Here are the heatmaps and labels for the example shown in the pipeline section above.
 
