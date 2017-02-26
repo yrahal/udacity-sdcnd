@@ -2,14 +2,13 @@
 Projects implemented within the [Udacity Self-Driving Car Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013),
 grouped under one repository:
 
-1. Lane Finding: Basic lane lines detection from a video stream.
-2. Traffic Signs Classification: Trained a convolutional neural network with TensorFlow
-  to recognize various traffic signs.
-3. Behaviorial Cloning: Trained a car to autonomously drive in a simulator using a convolutional
-  neural network, implemented with Keras.
-4. Advanced Lane Finding: Lane detection in various lighting conditions and different curvatures from
-  a video stream.
-5. Vehicle Detection: Accurately detected moving cars in a video stream.
+Project             |  Screenshot
+---------------------------|:-------------------------:
+**1. Lane Finding**: Basic lane lines detection from a video stream | <img src="images/p1.png" width="400"/>
+**2. Traffic Signs Classification**: Trained a convolutional neural network with TensorFlow to recognize various traffic signs. | <img src="images/p2.png" width="400"/>
+**3. Behaviorial Cloning**: Trained a car to autonomously drive in a simulator using a convolutional neural network, implemented with Keras ([YouTube video](https://www.youtube.com/watch?v=X-4ZBYgFSNQ)) | <img src="images/p3.png" width="400"/>
+**4. Advanced Lane Finding**: Lane detection in various lighting conditions and different curvatures from a video stream ([YouTube video](https://www.youtube.com/watch?v=UGRvXfqt-a8)) | <img src="images/p4.png" width="400"/>
+**5. Vehicle Detection**: Accurately detected moving cars in a video stream | <img src="images/p5.png" width="400"/>
 
 # Instructions
 If you plan to test the projects, you'll need to clone the [udacity-sdcnd-data](https://github.com/yrahal/udacity-sdcnd-data) as well.
